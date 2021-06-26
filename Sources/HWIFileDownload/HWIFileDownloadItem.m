@@ -67,17 +67,13 @@
         self.lastHttpStatusCode = 0;
         
         self.progress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress] userInfo:nil];
-        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
-        {
-            self.progress.kind = NSProgressKindFile;
-            [self.progress setUserInfoObject:NSProgressFileOperationKindKey forKey:NSProgressFileOperationKindDownloading];
-            [self.progress setUserInfoObject:aDownloadToken forKey:@"downloadToken"];
-            self.progress.cancellable = YES;
-            self.progress.pausable = NO;
-            self.progress.totalUnitCount = NSURLSessionTransferSizeUnknown;
-            self.progress.completedUnitCount = 0;
-        }
-        
+		self.progress.kind = NSProgressKindFile;
+		[self.progress setUserInfoObject:NSProgressFileOperationKindKey forKey:NSProgressFileOperationKindDownloading];
+		[self.progress setUserInfoObject:aDownloadToken forKey:@"downloadToken"];
+		self.progress.cancellable = YES;
+		self.progress.pausable = NO;
+		self.progress.totalUnitCount = NSURLSessionTransferSizeUnknown;
+		self.progress.completedUnitCount = 0;
     }
     return self;
 }
@@ -86,29 +82,23 @@
 - (void)setExpectedFileSizeInBytes:(int64_t)anExpectedFileSizeInBytes
 {
     _expectedFileSizeInBytes = anExpectedFileSizeInBytes;
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
-    {
-        if (anExpectedFileSizeInBytes > 0)
-        {
-            self.progress.totalUnitCount = anExpectedFileSizeInBytes;
-        }
-    }
+	if (anExpectedFileSizeInBytes > 0)
+	{
+		self.progress.totalUnitCount = anExpectedFileSizeInBytes;
+	}
 }
 
 
 - (void)setReceivedFileSizeInBytes:(int64_t)aReceivedFileSizeInBytes
 {
     _receivedFileSizeInBytes = aReceivedFileSizeInBytes;
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1)
-    {
-        if (aReceivedFileSizeInBytes > 0)
-        {
-            if (self.expectedFileSizeInBytes > 0)
-            {
-                self.progress.completedUnitCount = aReceivedFileSizeInBytes;
-            }
-        }
-    }
+	if (aReceivedFileSizeInBytes > 0)
+	{
+		if (self.expectedFileSizeInBytes > 0)
+		{
+			self.progress.completedUnitCount = aReceivedFileSizeInBytes;
+		}
+	}
 }
 
 
